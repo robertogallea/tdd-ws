@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\InvalidCurrencyException;
+use App\Mail\NotExistingCurrencyConversionRequestedMail;
 
 it('can convert between EUR and EUR with arbitrary amounts', function ($amount) {
     $this->mock(
@@ -61,6 +62,7 @@ it('validates input data', function ($override) {
 ]);
 
 it('returns an error message if conversion for a not existing currency is requested', function () {
+
     // create a mockup that returns an error
     $this->mock(
         \App\Services\ConversionServiceInterface::class,
@@ -79,6 +81,32 @@ it('returns an error message if conversion for a not existing currency is reques
         'amount' => 1,
     ])->assertNotFound() // do assertions on response
         ->assertJson(['message' => 'Currency XXX does not exist']);
+});
+
+test('an email message is sent to the administrator if a conversion for a not existint currency is requested', function () {
+    Mail::fake();
+
+    $this->mock(
+        \App\Services\ConversionServiceInterface::class,
+        function($mock) {
+            $mock->shouldReceive('convert')
+                ->with('XXX', 'EUR', 1)
+                ->once()
+                ->andThrows(new InvalidCurrencyException(message: 'Currency XXX does not exist'));
+        }
+    );
+
+    // make request
+    $this->postJson('/api/convert', [
+        'from' => 'XXX',
+        'to' => 'EUR',
+        'amount' => 1,
+    ]);
+
+    Mail::assertSent(NotExistingCurrencyConversionRequestedMail::class, function($mail) {
+        return $mail->currency == 'XXX' &&
+            $mail->to[0]['address'] === 'admin@admin.it';
+    });
 });
 
 
