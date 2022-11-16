@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'apiKey' => env('API_KEY', '123'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

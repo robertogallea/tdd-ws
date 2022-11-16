@@ -27,7 +27,7 @@ can be used from both an **http endpoint and a console command**
 - (x) it blocks requests in A.M. hours
 - (x) it allows requests in P.M. hours
 - (x) it can convert between two currencies using db
-- it can convert between two currencies using api
+- (x) it can convert between two currencies using api
 - it can convert between two currencies using cache
 - it can import CSV files into database
 - It can import CSV conversions from file upload
