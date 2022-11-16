@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Models\Conversion;
 
-class EloquentConversionService
+class EloquentConversionService implements ConversionServiceInterface
 {
-    public function convert(string $from, string $to, float $amount)
+    /**
+     * @inheritDoc
+     */
+    public function convert(string $from, string $to, float $amount): float
     {
         if ($from === $to) {
             return $amount;

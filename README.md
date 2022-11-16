@@ -20,12 +20,12 @@ can be used from both an **http endpoint and a console command**
 
 ## Required tests
 
-- it can convert amounts between arbitrary currencies
+- (x) it can convert amounts between arbitrary currencies
 - it validates currency conversion requests data
 - if a conversion for a not existing currency is requested, an error message with 404 status is returned
 - if a conversion for a not existing currency is requested, an email is sent to the admin
 - it blocks requests in A.M. hours
-- it can convert between two currencies using db
+- (x) it can convert between two currencies using db
 - it can convert between two currencies using api
 - it can convert between two currencies using cache
 - it can import CSV files into database
