@@ -11,7 +11,19 @@
 |
 */
 
-uses(Tests\TestCase::class)->in('Feature');
+uses(Tests\TestCase::class)->in('Feature', 'Unit');
+
+beforeEach(function () {
+
+});
+
+dataset('conversions', [
+    ['EUR', 'EUR', 1, 1],
+    ['EUR', 'EUR', 10, 10],
+    ['EUR', 'GBP', 1, 0.7],
+    ['EUR', 'GBP', 10, 7],
+    ['GBP', 'EUR', 10, round(100 / 7, 2)],
+]);
 
 /*
 |--------------------------------------------------------------------------
