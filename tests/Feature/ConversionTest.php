@@ -3,6 +3,10 @@
 use App\Exceptions\InvalidCurrencyException;
 use App\Mail\NotExistingCurrencyConversionRequestedMail;
 
+beforeEach(function() {
+    $this->withoutMiddleware(\App\Http\Middleware\AfterHours::class);
+});
+
 it('can convert between EUR and EUR with arbitrary amounts', function ($amount) {
     $this->mock(
         \App\Services\ConversionServiceInterface::class,
@@ -107,6 +111,24 @@ test('an email message is sent to the administrator if a conversion for a not ex
         return $mail->currency == 'XXX' &&
             $mail->to[0]['address'] === 'admin@admin.it';
     });
+});
+
+it('blocks requests before midday', function () {
+    $this->withMiddleware(\App\Http\Middleware\AfterHours::class);
+
+    $this->mock(
+        \App\Services\ConversionServiceInterface::class,
+        function($mock) {}
+    );
+
+    $this->travelTo(\Carbon\Carbon::today()->setHour(11));
+
+    $this->postJson('/api/convert', [
+        'from' => 'EUR',
+        'to' => 'EUR',
+        'amount' => 1,
+    ])->assertUnauthorized()
+        ->assertJson(['message' => "The system is online after midday"]);
 });
 
 

@@ -15,13 +15,6 @@ use App\Models\Conversion;
 
 uses(Tests\TestCase::class)->in('Feature', 'Unit');
 
-uses()->beforeEach(function () {
-    Conversion::factory()->create([
-        'from' => 'EUR',
-        'to' => 'GBP',
-        'rate' => 70,
-    ]);
-})->in('Unit');
 
 dataset('conversions', [
     ['EUR', 'EUR', 1, 1],

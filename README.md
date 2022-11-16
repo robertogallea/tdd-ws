@@ -23,8 +23,9 @@ can be used from both an **http endpoint and a console command**
 - (x) it can convert amounts between arbitrary currencies
 - (x) it validates currency conversion requests data
 - (x) if a conversion for a not existing currency is requested, an error message with 404 status is returned
-- if a conversion for a not existing currency is requested, an email is sent to the admin
-- it blocks requests in A.M. hours
+- (x) if a conversion for a not existing currency is requested, an email is sent to the admin
+- (x) it blocks requests in A.M. hours
+- (x) it allows requests in P.M. hours
 - (x) it can convert between two currencies using db
 - it can convert between two currencies using api
 - it can convert between two currencies using cache

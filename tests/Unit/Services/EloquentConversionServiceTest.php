@@ -5,6 +5,14 @@ use App\Services\EloquentConversionService;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
+beforeEach(function () {
+    Conversion::factory()->create([
+        'from' => 'EUR',
+        'to' => 'GBP',
+        'rate' => 70,
+    ]);
+});
+
 it('can convert between currencies', function ($from, $to, $amount, $expected) {
     $service = new EloquentConversionService();
     $result = $service->convert($from, $to, $amount);
