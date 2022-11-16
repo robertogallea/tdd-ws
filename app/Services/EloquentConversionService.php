@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidCurrencyException;
 use App\Models\Conversion;
 
 class EloquentConversionService implements ConversionServiceInterface
@@ -29,6 +30,10 @@ class EloquentConversionService implements ConversionServiceInterface
             'to' => $from,
         ])->first();
 
-        return round($amount / $conversion->rate * 100, 2);
+        if ($conversion != null) {
+            return round($amount / $conversion->rate * 100, 2);
+        }
+
+        throw new InvalidCurrencyException("Currency {$from} does not exist");
     }
 }

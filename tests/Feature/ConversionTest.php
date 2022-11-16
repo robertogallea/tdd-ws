@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\InvalidCurrencyException;
+
 it('can convert between EUR and EUR with arbitrary amounts', function ($amount) {
     $this->mock(
         \App\Services\ConversionServiceInterface::class,
@@ -57,5 +59,26 @@ it('validates input data', function ($override) {
     [['amount' => 'a']],
     [['amount' => -1]],
 ]);
+
+it('returns an error message if conversion for a not existing currency is requested', function () {
+    // create a mockup that returns an error
+    $this->mock(
+        \App\Services\ConversionServiceInterface::class,
+        function($mock) {
+            $mock->shouldReceive('convert')
+                ->with('XXX', 'EUR', 1)
+                ->once()
+                ->andThrows(new InvalidCurrencyException(message: 'Currency XXX does not exist'));
+        }
+    );
+
+    // make request
+    $this->postJson('/api/convert', [
+        'from' => 'XXX',
+        'to' => 'EUR',
+        'amount' => 1,
+    ])->assertNotFound() // do assertions on response
+        ->assertJson(['message' => 'Currency XXX does not exist']);
+});
 
 
