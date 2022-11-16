@@ -23,7 +23,10 @@ test('requests after midday are allowed', function () {
 
     $request = new \Illuminate\Http\Request();
 
-    $mw->handle($request, function() {
+    $result = $mw->handle($request, function() {
         $this->assertTrue(true);
+        return 'ok';
     });
+
+    $this->assertEquals('ok', $result);
 });
