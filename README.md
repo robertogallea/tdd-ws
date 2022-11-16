@@ -29,6 +29,6 @@ can be used from both an **http endpoint and a console command**
 - (x) it can convert between two currencies using db
 - (x) it can convert between two currencies using api
 - (x) it can convert between two currencies using cache
-- it can import CSV files into database
-- It can import CSV conversions from file upload
-- It can import CSV conversions from command line
+- (x) it can import CSV files into database
+- (x) It can import CSV conversions from file upload
+- (x) It can import CSV conversions from command line
